@@ -19,34 +19,37 @@ import com.google.common.net.HttpHeaders;
 
 import io.swagger.annotations.*;
 
-@RestController
-public class RestCalculator {
-	
-	// path rest webservice
-	//http://localhost/addition/10/20
-	@RequestMapping( value="/addition/{param1}/{input2}" , method = RequestMethod.GET  )
-	public int add( @PathVariable  int param1,@PathVariable(name="input2")  int param2) throws Exception {
+@Api(description="this is my service to test get and post webservice")
+
+public class RestCalculator2 {
+		 
+	// http://localhost:8888/addCal/12/10
+	Logger log=Logger.getLogger("RestCalculator");
+	@ApiOperation(value="this is used for adding 2 numbers")
+	@RequestMapping(value = "/addCal/{param1}/{param2}", method = RequestMethod.GET)
+	public int add(@PathVariable(name="param1") int param1, @PathVariable int param2) throws Exception {
+		log.debug("debugging");
+		log.info("information");
+		log.warn("warning");
+		log.error("error");
+		// debug >  info > warn > error
 		int	sum=param1 + param2;
-		return sum;
+	
+	return sum;
 	}
 	
-	@RequestMapping(value="/square/{side}" , method=RequestMethod.GET )
-	public int areaOfSquare(@PathVariable int side) {
-		int areaOfSquare=side * side;
-		return areaOfSquare;
-	}
 	
-	// query string rest webservice
 	// http://localhost/subCal?param1=10&param2=5
-	// http://localhost/getRestaurant?zip=123&street=123
 	@RequestMapping(value = "/subCal", method = RequestMethod.GET)
 	public int sub(@RequestParam("param1") int a, @RequestParam("param2") int b) {
+		log.info("sub hello log4j");
 		int sub=a - b;
 		return sub;
 	}
 	
-	// http://localhost/multiply
-	@RequestMapping(value = "/multiply", method = RequestMethod.POST, 
+	// http://localhost/jsonReqMul - send json in request body,
+	// input type json string
+	@RequestMapping(value = "/jsonReqMul", method = RequestMethod.POST, 
 			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public int mulCalculator(@RequestBody Input in) {
 		// "Input" parameter is json compliant java program
@@ -58,6 +61,7 @@ public class RestCalculator {
 	@RequestMapping(value = "/jsonRes/{param1}/{param2}", 
 			method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Output calculator(@PathVariable int param1, @PathVariable int param2) {
+		log.info("add json log4j");
 		Output res = new Output();
 		res.setSum(param1 + param2);
 		res.setSub(param1 - param2);
