@@ -67,6 +67,7 @@
 						<goals>
 							<goal>wsimport</goal>
 						</goals>
+						
 					</execution>
 				</executions>
 				<configuration>

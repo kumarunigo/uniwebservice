@@ -15,29 +15,14 @@ import com.tutorial.webserviceClient.rest.Output;
 public class RestClientMain {
 
 	public static void main(String[] args) {
-		//testSubP(); 
-		testMultiplyJsonReq();
+		testJsonRes();
 		/*
+		testMultiplyJsonReq();
 		testAdd(); // Consume get rest service with path param
 		testSub(); // Consume get rest service with query string input
 		testJsonRes(); // Consume get rest service with JSON output
 		testMultiplyJsonReq(); // Consume post rest service with JSON input
 		*/
-	}
-	public static void testSubP() {
-		RestTemplate getTest=new RestTemplate();
-		
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
-		map.add("x", "20");
-		map.add("y", "10");
-		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
-   
-		int res=getTest.postForObject
-				("http://localhost:8888/subCalP",request,
-						Integer.class);
-		System.out.println("Sub rest service result :"+res);
 	}
 /*	
 	Get Http client
@@ -47,8 +32,7 @@ public class RestClientMain {
 */
 	public static void testAdd() {
 		RestTemplate getTest=new RestTemplate(); // similar to soap stub program
-		int res=getTest.getForObject("http://localhost:8888/addCal/3/12", 
-				Integer.class);
+		int res=getTest.getForObject("http://localhost/addition/10/40", Integer.class);
 		System.out.println("Add rest service result :"+res);
 	}
 	// get method
@@ -56,7 +40,7 @@ public class RestClientMain {
 	// output = resonse
 	public static void testSub() {
 		RestTemplate getTest=new RestTemplate();
-		int res=getTest.getForObject("http://localhost:8888/subCal?param1=100&param2=20", Integer.class);
+		int res=getTest.getForObject("http://localhost/subCal?param1=100&param2=20", Integer.class);
 		System.out.println("Sub rest service result :"+res);
 	}
 /*
@@ -69,13 +53,11 @@ public class RestClientMain {
 	public static void testMultiplyJsonReq()
 	{
 		RestTemplate postTest=new RestTemplate();
-		Input input=new Input();
-		input.param1=20; 
-		input.param2=100; 
-		// { "param1":20 , "param2":50 }
-		int res=postTest.postForObject("http://localhost:8888/jsonReqMul",
-				input,
-				Integer.class);
+		Input data=new Input();
+		data.param1=100; 
+		data.param2=40; 
+		// { "param1":20 , "param2":100 }
+		int res=postTest.postForObject("http://localhost/multiply",data,Integer.class);
 		// Rest template
 		// 1) convert input reference into json string. { "param1":20 , "param2":50 }
 		// 2) make a call to url.. and pass above json string in the body
@@ -85,7 +67,7 @@ public class RestClientMain {
 	public static void testJsonRes()
 	{
 		RestTemplate postTest=new RestTemplate();
-		Output res=postTest.getForObject("http://localhost:8888/jsonRes/10/5", Output.class);
+		Output res=postTest.getForObject("http://localhost/jsonRes/100/10", Output.class);
 		/*
 		{
 		    "sum": 15,
@@ -101,4 +83,22 @@ public class RestClientMain {
 		
 		
 	}
+	/*
+	 
+	public static void testSubP() {
+		RestTemplate getTest=new RestTemplate();
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
+		map.add("x", "20");
+		map.add("y", "10");
+		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+   
+		int res=getTest.postForObject
+				("http://localhost:8888/subCalP",request,
+						Integer.class);
+		System.out.println("Sub rest service result :"+res);
+	}
+	 */
 }
