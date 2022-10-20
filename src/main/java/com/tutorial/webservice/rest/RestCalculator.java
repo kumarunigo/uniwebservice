@@ -21,42 +21,35 @@ import io.swagger.annotations.*;
 
 @RestController
 public class RestCalculator {
-	
-	// path rest webservice
-	//http://localhost/addition/10/20
-	@RequestMapping( value="/addition/{param1}/{input2}" , method = RequestMethod.GET  )
-	public int add( @PathVariable  int param1,@PathVariable(name="input2")  int param2) throws Exception {
-		int	sum=param1 + param2;
-		return sum;
+	 
+	// method = API = service = operations = function
+	// http://localhost/sum/10/25
+	// mapping = connection between http request to java method
+	@RequestMapping( value="/sum/{a}/{b}" ,  method = RequestMethod.GET  )
+			public int add(@PathVariable int a,@PathVariable int b){
+				int sum=a+b;
+				return sum;
+			}
+	// http://localhost/websitelogin?userid=john&password=john1!
+	@RequestMapping( value="/websitelogin" ,  method = RequestMethod.GET  )
+	public String logon(@RequestParam String userid,@RequestParam String password){
+		if(userid.equals("john") && password.equals("john1!"))
+			return "login is success";
+		else 
+			return "login failed";
 	}
 	
-	@RequestMapping(value="/square/{side}" , method=RequestMethod.GET )
-	public int areaOfSquare(@PathVariable int side) {
-		int areaOfSquare=side * side;
-		return areaOfSquare;
-	}
-	
-	// query string rest webservice
-	// http://localhost/subCal?param1=10&param2=5
-	// http://localhost/getRestaurant?zip=123&street=123
-	@RequestMapping(value = "/subCal", method = RequestMethod.GET)
-	public int sub(@RequestParam("param1") int a, @RequestParam("param2") int b) {
-		int sub=a - b;
-		return sub;
-	}
-	
-	// http://localhost/multiply
-	@RequestMapping(value = "/multiply", method = RequestMethod.POST, 
+	@RequestMapping(value = "/bank", method = RequestMethod.POST,  
 			consumes = MediaType.APPLICATION_JSON_VALUE)
-	public int mulCalculator(@RequestBody Input in) {
-		// "Input" parameter is json compliant java program
-		int mul=in.param1 * in.param2;
-		return mul;
+	// consumes : this webservice will recieve/input as json
+	public int  simpleIntCalcu(@RequestBody Loan l) {
+		int simpleInterest=l.principal * l.time * l.rate / 100;
+		return simpleInterest;
 	}
-	
-	// http://localhost/jsonRes/1/2
-	@RequestMapping(value = "/jsonRes/{param1}/{param2}", 
+	// http://localhost/allMathOp/10/2
+	@RequestMapping(value = "/allMathOp/{param1}/{param2}", 
 			method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	// produces : this webservice will return/output as json
 	public Output calculator(@PathVariable int param1, @PathVariable int param2) {
 		Output res = new Output();
 		res.setSum(param1 + param2);

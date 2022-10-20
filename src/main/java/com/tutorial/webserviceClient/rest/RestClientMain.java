@@ -15,7 +15,7 @@ import com.tutorial.webserviceClient.rest.Output;
 public class RestClientMain {
 
 	public static void main(String[] args) {
-		testJsonRes();
+		testSimInt();
 		/*
 		testMultiplyJsonReq();
 		testAdd(); // Consume get rest service with path param
@@ -31,8 +31,8 @@ public class RestClientMain {
 		int/string/float etc.. if response is json an object(json compliant)
 */
 	public static void testAdd() {
-		RestTemplate getTest=new RestTemplate(); // similar to soap stub program
-		int res=getTest.getForObject("http://localhost/addition/10/40", Integer.class);
+		RestTemplate getClient=new RestTemplate(); // similar to soap stub program
+		int res=getClient.getForObject("http://localhost/add/10/30", Integer.class);
 		System.out.println("Add rest service result :"+res);
 	}
 	// get method
@@ -40,7 +40,7 @@ public class RestClientMain {
 	// output = resonse
 	public static void testSub() {
 		RestTemplate getTest=new RestTemplate();
-		int res=getTest.getForObject("http://localhost/subCal?param1=100&param2=20", Integer.class);
+		int res=getTest.getForObject("http://localhost/sub?number1=50&number2=15", Integer.class);
 		System.out.println("Sub rest service result :"+res);
 	}
 /*
@@ -50,24 +50,20 @@ public class RestClientMain {
 	Response = what output is expected from rest services
 		int/string/float etc.. object(json compliant) if response is json
 */
-	public static void testMultiplyJsonReq()
+	public static void testSimInt()
 	{
-		RestTemplate postTest=new RestTemplate();
-		Input data=new Input();
-		data.param1=100; 
-		data.param2=40; 
-		// { "param1":20 , "param2":100 }
-		int res=postTest.postForObject("http://localhost/multiply",data,Integer.class);
-		// Rest template
-		// 1) convert input reference into json string. { "param1":20 , "param2":50 }
-		// 2) make a call to url.. and pass above json string in the body
-		// 3) webservice response is converted into 3 parameter 
-		System.out.println("Mul rest service with json input result:"+res);
+		SimpleInterestInput si=new SimpleInterestInput ();
+		si.principal=200000; si.time=120; si.rate=2;
+		RestTemplate post=new RestTemplate();
+	int res=post.postForObject("http://localhost/simpleInt", 
+						si
+						, Integer.class);
+	System.out.println(res );
 	}
 	public static void testJsonRes()
 	{
 		RestTemplate postTest=new RestTemplate();
-		Output res=postTest.getForObject("http://localhost/jsonRes/100/10", Output.class);
+		ComplexOutput res=postTest.getForObject("http://localhost/allMath/100/10", ComplexOutput.class);
 		/*
 		{
 		    "sum": 15,
