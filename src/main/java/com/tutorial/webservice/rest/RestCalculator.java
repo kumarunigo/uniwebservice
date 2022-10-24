@@ -22,6 +22,21 @@ import io.swagger.annotations.*;
 @RestController
 public class RestCalculator {
 	 
+	Logger log=Logger.getLogger("RestCalculator");
+	@RequestMapping( value="/div/{a}/{b}" ,  method = RequestMethod.GET  )
+	public int div(@PathVariable int a,@PathVariable int b){
+		System.out.println("customer entered :"+ a +" and "+ b);
+		log.info("customer entered :"+a +" and "+ b);
+		
+		log.debug("1");
+		log.info("2");
+		log.warn("3");
+		log.error("4");
+		// all > debug > info > warn > error > none
+		int sum=a/b;
+		return sum;
+	}
+	
 	// method = API = service = operations = function
 	// http://localhost/sum/10/25
 	// mapping = connection between http request to java method
